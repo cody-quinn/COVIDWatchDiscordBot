@@ -1,3 +1,5 @@
 /venv/
 /.idea/
-/src/token.txt
+
+token.txt
+clientid.txt
