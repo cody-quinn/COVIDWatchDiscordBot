@@ -127,6 +127,20 @@ def main():
 
                 await message.channel.send(content="‌‌ \n**`Coronavirus Symptoms`**\n*`Please stay safe`*", embed=embed)
 
+            if command == "advice" or command == "a":
+                ran=True
+
+                embed = discord.Embed(colour=discord.Colour(0x1d837e), timestamp=datetime.datetime.utcfromtimestamp(1589104767))
+
+                embed.set_thumbnail(url="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/SARS-CoV-2_without_background.png/220px-SARS-CoV-2_without_background.png")
+                embed.set_footer(text="Covid Watch - Coronavirus Statistics", icon_url="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/SARS-CoV-2_without_background.png/220px-SARS-CoV-2_without_background.png")
+
+                embed.add_field(name="Advice", value='''
+                Make sure to **wear a mask** in public\nTry to avoid contact with people!\nDont visit your elders; you could get them sick!\nSeniors, People with medical issues, or infants are at higher risk\nStay 6 feet apart from the public\nRemember that you can make it through the pandemic\nDont freak out. Staying calm and following the rules helps\nCovid cannot spread through mosquito,flea, or tick bites\nAlways wash your hands after going out.\nLove is in the air.... But so is Covid-19, so try to avoid kissing your partner.\nBeing healthy doesnt necesairly mean you are immune to covid.\nFeel free to ~skype~ ~zoom meeting~ discord call people you know; They probably need attention as much as you do!\nCovid will pass. There is no need to freak out about it\nFight back by staying inside!
+                ''')
+
+                await message.channel.send(content="‌‌ \n**`Coronavirus Symptoms`**\n*`Please stay safe`*", embed=embed)
+
             if command == "help" or command == "h":
                 ran=True
 
