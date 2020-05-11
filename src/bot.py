@@ -1,4 +1,4 @@
-import discord, requests, time, threading, asyncio, datetime
+import discord, requests, time, threading, asyncio, datetime, random
 
 
 current_milli_time = lambda: int(round(time.time() * 1000))
@@ -93,12 +93,17 @@ def main():
                         embed.set_footer(text="Covid Watch - Coronavirus Statistics",
                                          icon_url="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/SARS-CoV-2_without_background.png/220px-SARS-CoV-2_without_background.png")
 
+                        death_rate = str(int(str(item['total_deaths']).replace(',','')) / int(str(item['total_cases']).replace(',','')) * 100)
+                        death_rate = death_rate[:6] + "%"
+                        if all_info:
+                            death_rate = death_rate + "\n*TOTAL DEATHS / TOTAL CASES*"
+
                         embed.add_field(name="Currently Infected", value=item['active_cases'], inline=False)
                         embed.add_field(name="Total Recovered", value=item['total_recovered'], inline=False)
                         embed.add_field(name="Total Deaths", value=item['total_deaths'], inline=False)
                         embed.add_field(name="Total Cases", value=item['total_cases'])
                         embed.add_field(name="Cases Per Million", value=item['cases_per_mill_pop'])
-                        embed.add_field(name="Death Rate", value="Feature Coming Soon")
+                        embed.add_field(name="Death Rate", value=death_rate)
 
                         if all_info:
                             embed.add_field(name="New Cases", value=item['new_cases'])
@@ -139,11 +144,28 @@ def main():
                 embed.set_thumbnail(url="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/SARS-CoV-2_without_background.png/220px-SARS-CoV-2_without_background.png")
                 embed.set_footer(text="Covid Watch - Coronavirus Statistics", icon_url="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/SARS-CoV-2_without_background.png/220px-SARS-CoV-2_without_background.png")
 
-                embed.add_field(name="Advice", value='''
-                Make sure to **wear a mask** in public\nTry to avoid contact with people!\nDont visit your elders; you could get them sick!\nSeniors, People with medical issues, or infants are at higher risk\nStay 6 feet apart from the public\nRemember that you can make it through the pandemic\nDont freak out. Staying calm and following the rules helps\nCovid cannot spread through mosquito,flea, or tick bites\nAlways wash your hands after going out.\nLove is in the air.... But so is Covid-19, so try to avoid kissing your partner.\nBeing healthy doesnt necesairly mean you are immune to covid.\nFeel free to ~skype~ ~zoom meeting~ discord call people you know; They probably need attention as much as you do!\nCovid will pass. There is no need to freak out about it\nFight back by staying inside!
-                ''')
+                advices = ['Make sure to **wear a mask** in public', 'Try to avoid contact with people!', 'Dont visit your elders; you could get them sick!',
+                           'Seniors, People with medical issues, or infants are at higher risk', 'Stay 6 feet apart from the public',
+                           'Remember that you can make it through the pandemic', 'Dont freak out. Staying calm and following the rules helps',
+                           'Covid cannot spread through mosquito, flea, or tick bites', 'Always wash your hands after going out.',
+                           'Love is in the air.... But so is Covid-19, so try to avoid kissing your partner.',
+                           'Being healthy doesnt necesairly mean you are immune to covid.',
+                           'Feel free to ~skype~ ~zoom meeting~ discord call people you know; They probably need attention as much as you do!,'
+                           'Covid will pass. There is no need to freak out about it\nFight back by staying inside!']
+                final_advice = ""
+                if all_info:
+                    i = 0
+                    for adv in advices:
+                        i += 1
+                        final_advice = final_advice + "**`" + str(i) + "-`**" + adv + "\n"
+                else:
+                    for i in range(3):
+                        ii = random.randint(0, len(advices)-1)
+                        final_advice = final_advice + "**`" + str(i+1) + "-`**" + advices[ii] + "\n"
 
-                await message.channel.send(content="‌‌ \n**`Coronavirus Symptoms`**\n*`Please stay safe`*", embed=embed)
+                embed.add_field(name="Advice", value=final_advice)
+
+                await message.channel.send(content="‌‌ \n**`Coronavirus Advice`**\n*`Please stay safe`*", embed=embed)
 
             if command == "settings" or command == "s":
                 ran=True
@@ -168,6 +190,9 @@ def main():
                                 inline=False)
                 embed.add_field(name="> c;symptoms",
                                 value="The 'symptoms' command will display symptoms and information about the coronavirus\n‌ ",
+                                inline=False)
+                embed.add_field(name="> c;advice",
+                                value="The 'advice' command will display some random bit of advice about the coronavirus\n\n __**Modifiers**__\n     ***__`-all`__***  -  Displays all advice instead of just a few\n‌ ",
                                 inline=False)
                 # embed.add_field(name="> c;settings",
                 #                 value="The 'settings' command will allow you to change various settings related to the bot \n\n __**Modifiers (settings)**__\n     ***__`-update_channel`__***  -  Sets the message your messaging from to a update channel\n‌ ",
