@@ -2,6 +2,8 @@ import discord, requests, time, threading, asyncio, datetime
 
 
 current_milli_time = lambda: int(round(time.time() * 1000))
+update_channels = []
+client = discord.Client()
 
 
 def get_token():
@@ -19,8 +21,6 @@ client_id = get_client_id()
 
 
 def main():
-    client = discord.Client()
-
     @client.event
     async def on_message(message):
         command = ""
@@ -48,6 +48,7 @@ def main():
                 args_raw = args_raw + s + " "
 
             scope = "World"
+            setting = ""
             all_info = False
 
 
@@ -74,6 +75,9 @@ def main():
 
                     if sub_args[0] == 'a' or sub_args[0] == 'all' or sub_args[0] == 'more':
                         all_info = True
+
+                    if sub_args[0] == 'update_channel':
+                        setting = 'update_channel'
 
 
             # Getting Command Executed and executing
@@ -127,6 +131,14 @@ def main():
 
                 await message.channel.send(content="‌‌ \n**`Coronavirus Symptoms`**\n*`Please stay safe`*", embed=embed)
 
+            if command == "settings" or command == "s":
+                ran=True
+
+                message = await message.channel.send(
+                    "This command is almost done!")
+                time.sleep(4)
+                await message.delete()
+
             if command == "help" or command == "h":
                 ran=True
 
@@ -143,6 +155,9 @@ def main():
                 embed.add_field(name="> c;symptoms",
                                 value="The 'symptoms' command will display symptoms and information about the coronavirus\n‌ ",
                                 inline=False)
+                # embed.add_field(name="> c;settings",
+                #                 value="The 'settings' command will allow you to change various settings related to the bot \n\n __**Modifiers (settings)**__\n     ***__`-update_channel`__***  -  Sets the message your messaging from to a update channel\n‌ ",
+                #                 inline=False)
                 embed.add_field(name="> c;help",
                                 value="The 'help' command will display a embed containing help formation about the bot\n‌ ",
                                 inline=False)
@@ -152,7 +167,7 @@ def main():
                     embed=embed)
 
             if ran == False:
-                await message.channel.send(content="Did you mean *`@COVIDWatch help`* ?")
+                await message.channel.send(content="Did you mean *`c;help`* ?")
 
     bla = updateStatus(client)
     bla.start()
