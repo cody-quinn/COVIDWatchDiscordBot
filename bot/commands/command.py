@@ -5,8 +5,8 @@ class Command:
         self.command = str(command)
 
 
-    async def run(self, message, *args):
+    async def run(self, message, **args):
         await message.channel.send("Hello World!")
 
-        for arg in args:
-            await message.channel.send(arg['name'] + " >> " + arg['value'])
+        for arg in args['args']:
+            arg = dict(arg)
