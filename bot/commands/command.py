@@ -5,8 +5,15 @@ class Command:
         self.command = str(command)
 
 
-    async def run(self, message, **args):
-        await message.channel.send("Hello World!")
+    async def run(self, message, raw_args):
+        args = []
+        for rarg in raw_args.split('-'):
+            arg = rarg.split(' ')
+            for i in arg:
+                if i == '':
+                    arg.remove('')
+            if len(arg > 0):
+                args.append(arg)
 
-        for arg in args['args']:
-            arg = dict(arg)
+        for arg in args:
+           await message.channel.send("{}".format(str(arg)))

@@ -1,19 +1,10 @@
 #Imports
-import discord
-from bot.commands.command import Command
+import discord, requests, threading, asyncio, time
+from commands.command import Command
+from update_status import UpdateStatus
 
 registered_commands = []
 client = discord.Client()
-
-'''
-    {
-        args: [
-            {key: x, value: y}
-            {key: x, value: y}
-            {key: x, value: y}
-        ]
-    }
-'''
 
 
 def main():
@@ -32,11 +23,15 @@ def main():
 
         if 'c;' == split_msg[0][0:2].lower():
             command = str(split_msg[0][2:])
+            args = ""
+            for a in split_msg[1:]:
+                args += a + " "
 
             for cmd in registered_commands:
                 if cmd.command == command:
-                    await cmd.run(message)
+                    await cmd.run(message, args)
 
+    updateStatus = UpdateStatus(client)
     client.run('NzA5MTI2MTI3MDAzNzYyODA4.Xr9SGQ.kwpFBCK2-0ijLhGklMvXadUZbQA')
 
 
