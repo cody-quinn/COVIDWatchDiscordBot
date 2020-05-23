@@ -1,5 +1,6 @@
 import discord, threading, asyncio, requests, time
 from bot.daemons.update_data import UpdateData
+from bot import log
 
 
 class UpdateStatus(object):
@@ -12,6 +13,8 @@ class UpdateStatus(object):
         thread.start()
 
     def run(self):
+        log("Update Status daemon started.")
+
         state=5
         while True:
             if state==1:
@@ -20,7 +23,7 @@ class UpdateStatus(object):
                     try:
                         await self.client.change_presence(activity=discord.Game(name='{:,} Deaths'.format(int(self.covidData.results['Global']['TotalDeaths']))))
                     except:
-                        print("["+ str(threading.current_thread().getName()) +"] Failed to update bot status")
+                        log("Failed to update bot status")
                 asyncio.run(update())
             elif state == 2:
                 state = 3
@@ -28,7 +31,7 @@ class UpdateStatus(object):
                     try:
                         await self.client.change_presence(activity=discord.Game(name='{:,} Recoveries'.format(int(self.covidData.results['Global']['TotalRecovered']))))
                     except:
-                        print("["+ str(threading.current_thread().getName()) +"] Failed to update bot status")
+                        log("Failed to update bot status")
                 asyncio.run(update())
             elif state == 3:
                 state = 4
@@ -36,7 +39,7 @@ class UpdateStatus(object):
                     try:
                         await self.client.change_presence(activity=discord.Game(name='{:,} Casses'.format(int(self.covidData.results['Global']['TotalConfirmed']))))
                     except:
-                        print("["+ str(threading.current_thread().getName()) +"] Failed to update bot status")
+                        log("Failed to update bot status")
                 asyncio.run(update())
             elif state == 4:
                 state = 5
@@ -44,7 +47,7 @@ class UpdateStatus(object):
                     try:
                         await self.client.change_presence(activity=discord.Activity(name="c;help", type=discord.ActivityType.listening))
                     except:
-                        print("["+ str(threading.current_thread().getName()) +"] Failed to update bot status")
+                        log("Failed to update bot status")
                 asyncio.run(update())
             elif state == 5:
                 state = 1
@@ -52,6 +55,6 @@ class UpdateStatus(object):
                     try:
                         await self.client.change_presence(activity=discord.Activity(name="{} servers".format(len(self.client.guilds)), type=discord.ActivityType.watching))
                     except:
-                        print("["+ str(threading.current_thread().getName()) +"] Failed to update bot status")
+                        log("Failed to update bot status")
                 asyncio.run(update())
             time.sleep(4)

@@ -1,4 +1,6 @@
 import discord
+from bot import log
+
 
 class Command:
     def __init__(self, command):
@@ -6,7 +8,7 @@ class Command:
         try:
             self.init()
         except:
-            print(self.command + " has no initiation sequence.")
+            pass
 
 
     async def run(self, message, raw_args):
