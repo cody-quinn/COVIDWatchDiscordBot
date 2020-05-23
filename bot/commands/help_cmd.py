@@ -13,6 +13,14 @@ class HelpCMD(Command):
                         value="The 'cases' command will display a embed containing updated information about all the cases worldwide or in a selected region \n\n __**Modifiers**__\n     ***__`-country <target>`__***  -  Targets a specific country  (*Aliases:* **`-c`**)\n     ***__`-all`__***  -  Displays extra data, such as 'new' cases & 'new' deaths  (*Aliases:* **`-a`**)\n\n__**Example**__\n     **`c;cases -country US -all`**  -  Will target the USA and display all information including New Cases & New Deaths \n‌ ",
                         inline=False)
 
+        embed.add_field(name="> c;symptoms",
+                        value="The 'symptoms' command will display symptoms and information about the coronavirus\n‌ ",
+                        inline=False)
+
+        embed.add_field(name="> c;advice",
+                        value="The 'advice' command will display some random bit of advice about the coronavirus\n\n __**Modifiers**__\n     ***__`-all`__***  -  Displays all advice instead of just a few  (*Aliases:* **`-a`**)\n‌ ",
+                        inline=False)
+
         embed.add_field(name="> c;help",
                         value="The 'help' command will display a embed containing help formation about the bot\n‌ ",
                         inline=False)

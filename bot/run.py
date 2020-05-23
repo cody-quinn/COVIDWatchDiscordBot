@@ -1,6 +1,6 @@
 #Imports
 import discord
-from bot.commands import CasesCMD, HelpCMD
+from bot.commands import CasesCMD, HelpCMD, SymptomsCMD, AdviceCMD
 from bot.daemons import UpdateStatus
 from bot import getPreferences, log
 
@@ -11,6 +11,8 @@ def main():
     client = discord.Client()
     registered_commands.append(CasesCMD("cases"))
     registered_commands.append(HelpCMD("help"))
+    registered_commands.append(SymptomsCMD("symptoms"))
+    registered_commands.append(AdviceCMD("advice"))
 
 
     @client.event
