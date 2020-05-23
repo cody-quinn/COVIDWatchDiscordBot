@@ -11,8 +11,6 @@ class UpdateStatus(object):
     def run(self):
         state=1
         while True:
-            time.sleep(4)
-
             resp = requests.get('https://corona-virus-stats.herokuapp.com/api/v1/cases/general-stats')
             if state==1:
                 state=2
@@ -39,8 +37,16 @@ class UpdateStatus(object):
                         activity=discord.Game(name=resp.json()['data']['recovery_cases'] + " Recoveries"))
                 asyncio.run(update())
             elif state == 5:
+                state = 6
+                async def update():
+                    await self.client.change_presence(
+                        activity=discord.Game(name="c;help - v1.0"))
+                asyncio.run(update())
+            elif state == 6:
                 state = 1
                 async def update():
                     await self.client.change_presence(
-                        activity=discord.Game(name="c;help"))
+                        activity=discord.Activity(name="{} servers".format(len(self.client.guilds)), type=discord.ActivityType.watching))
                 asyncio.run(update())
+
+            time.sleep(4)

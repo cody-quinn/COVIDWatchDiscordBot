@@ -31,7 +31,9 @@ def main():
                 if cmd.command == command:
                     await cmd.run(message, args)
 
-    updateStatus = UpdateStatus(client)
+    @client.event
+    async def on_ready():
+        updateStatus = UpdateStatus(client)
     client.run('NzA5MTI2MTI3MDAzNzYyODA4.Xr9SGQ.kwpFBCK2-0ijLhGklMvXadUZbQA')
 
 

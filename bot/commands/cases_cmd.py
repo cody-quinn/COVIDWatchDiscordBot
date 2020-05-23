@@ -55,9 +55,29 @@ class CasesCMD(Command):
                     embed.add_field(name="New Cases", value='{:,}'.format(int(res_g['NewConfirmed'])))
                     embed.add_field(name="New Deaths", value='{:,}'.format(int(res_g['NewDeaths'])))
                     embed.add_field(name="New Recovered", value='{:,}'.format(int(res_g['NewRecovered'])))
-            else: # https://www.countryflags.io/be/flat/64.png
-                pass #TODO: Add in scoped results
+            else:
+                for country in results['Countries']:
+                    if country['Country'].lower() == scope.lower() or country['CountryCode'].lower() == scope.lower() or country['Slug'] == scope.lower():
+                        embed.set_thumbnail(url="https://www.countryflags.io/"+country['CountryCode'].lower()+"/flat/64.png")
+                        embed.set_footer(text="Covid Watch - Coronavirus Statistics",
+                                            icon_url="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/SARS-CoV-2_without_background.png/220px-SARS-CoV-2_without_background.png")
 
-            await message.channel.send(content="‌‌ \n**`Coronavirus Statistics for "+scope+"`**\n*`Last Update: "+str(results['Countries'][0]['Date'])+"`*", embed=embed)
+                        death_rate = str(int(str(country['TotalDeaths']).replace(',','')) / int(str(country['TotalConfirmed']).replace(',','')) * 100)
+                        death_rate = death_rate[:6] + "%"
+                        active_cases = str(country['TotalConfirmed'] - country['TotalDeaths'] - country['TotalRecovered'])
+
+                        embed.add_field(name="Currently Infected", value='{:,}'.format(int(active_cases)), inline=False)
+                        embed.add_field(name="Total Recovered", value='{:,}'.format(int(country['TotalRecovered'])), inline=False)
+                        embed.add_field(name="Total Deaths", value='{:,}'.format(int(country['TotalDeaths'])), inline=False)
+                        embed.add_field(name="Total Cases", value='{:,}'.format(int(country['TotalConfirmed'])))
+                        embed.add_field(name="Death Rate", value=death_rate)
+
+                        if allInfo:
+                            embed.add_field(name="Cases Per Million", value="Coming Soon")
+                            embed.add_field(name="New Cases", value='{:,}'.format(int(country['NewConfirmed'])))
+                            embed.add_field(name="New Deaths", value='{:,}'.format(int(country['NewDeaths'])))
+                            embed.add_field(name="New Recovered", value='{:,}'.format(int(country['NewRecovered'])))
+
+            await message.channel.send(content="‌‌ \n**`Coronavirus Statistics for "+scope+"`**\n*`Last Update: "+str(country['Date'])+"`*", embed=embed)
         else:
             await message.channel.send("**`Covid api returned status code {}.`**".format(req.status_code))
