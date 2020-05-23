@@ -1,5 +1,5 @@
 import discord, threading, asyncio, requests, time
-from daemons.update_data import UpdateData
+from bot.daemons.update_data import UpdateData
 
 
 class UpdateStatus(object):

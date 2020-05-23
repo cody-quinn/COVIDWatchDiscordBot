@@ -1,7 +1,7 @@
 #Imports
 import discord, requests, threading, asyncio, time
-from commands.cases_cmd import CasesCMD
-from daemons.update_status import UpdateStatus
+from bot.commands import CasesCMD, HelpCMD
+from bot.daemons import UpdateStatus
 
 registered_commands = []
 
@@ -9,6 +9,7 @@ registered_commands = []
 def main():
     client = discord.Client()
     registered_commands.append(CasesCMD("cases"))
+    registered_commands.append(HelpCMD("help"))
 
     @client.event
     async def on_message(message):
@@ -20,20 +21,22 @@ def main():
         else:
             split_msg = [message.content]
 
-
         if 'c;' == split_msg[0][0:2].lower():
             command = str(split_msg[0][2:])
             args = ""
             for a in split_msg[1:]:
                 args += a + " "
 
+            ran = False
             for cmd in registered_commands:
                 if cmd.command == command:
                     await cmd.run(message, args)
+            if not ran:
+                await message.channel.send(content="Did you mean *`c;help`* ?")
 
     @client.event
     async def on_ready():
-        updateStatus = UpdateStatus(client)
+        UpdateStatus(client)
     client.run('NzA5MTI2MTI3MDAzNzYyODA4.Xr9SGQ.kwpFBCK2-0ijLhGklMvXadUZbQA')
 
 

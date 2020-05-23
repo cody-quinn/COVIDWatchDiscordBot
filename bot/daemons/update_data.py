@@ -2,6 +2,10 @@ import threading, requests, time
 
 class UpdateData(object):
     def __init__(self):
+        self.unstable_req = None
+        self.req = None
+        self.results = None
+
         thread = threading.Thread(target=self.run, args=())
         thread.daemon = True
         thread.start()
@@ -9,10 +13,9 @@ class UpdateData(object):
     def run(self):
         while True:
             self.unstable_req = requests.get('https://api.covid19api.com/summary')
-            if self.unstable_req.status_code > 199 and self.unstable_req.status_code < 300:
+            if 199 < self.unstable_req.status_code < 300:
                 self.req = self.unstable_req
                 self.results = self.req.json()
-                print("["+ str(threading.current_thread().getName()) +"] Covid data updated, response code {}".format(self.req.status_code))
             else:
-                print("["+ str(threading.current_thread().getName()) +"] Covid data failed to update, reposnse code {}".format(self.req.status_code))
+                print("["+ str(threading.current_thread().getName()) +"] Covid data failed to update, response code {}".format(self.unstable_req.status_code))
             time.sleep(30)

@@ -2,5 +2,5 @@
 /.idea/
 **/__pycache__
 
-token.txt
-clientid.txt
+**/token.txt
+**/clientid.txt

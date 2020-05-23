@@ -1,6 +1,6 @@
-import discord, requests, datetime, threading, time
-from commands.command import Command
-from daemons.update_data import UpdateData
+import discord, datetime
+from bot.commands.command import Command
+from bot.daemons.update_data import UpdateData
 
 
 class CasesCMD(Command):
@@ -22,14 +22,14 @@ class CasesCMD(Command):
                 continue
             if arg[0] == "country" or arg[0] == "c":
                 if len(arg) > 1:
-                    for arg in args[1:]:
-                        scope = scope + arg
-                        if not arg == args[len(args-1)]:
+                    scope = ""
+                    for scopeArg in arg[1:]:
+                        scope = scope + str(scopeArg)
+                        if scopeArg != arg[len(arg)-1]:
                             scope = scope + " "
-                    print(scope)
 
                     # Adding special cases to countries that should have them
-                    if scope == "USA":
+                    if scope.lower() == "usa" or scope.lower() == "united states":
                         scope = "US"
                 else:
                     await message.channel.send("**`You must enter the name of a country you would like to scope into.`**")
@@ -38,15 +38,15 @@ class CasesCMD(Command):
             # if arg[0] == "day":
             #     ##TODO: Add date selector
 
-        if self.covidData.req.status_code > 199 and self.covidData.req.status_code < 300: #Im afraid the country you selected could not be found, maybe there was a spelling mistake?
+        if 199 < self.covidData.req.status_code < 300: #Im afraid the country you selected could not be found, maybe there was a spelling mistake?
             embed = discord.Embed(colour=discord.Colour(0x9c0519), timestamp=datetime.datetime.utcfromtimestamp(1589100774))
+            embed.set_footer(text="Covid Watch - Coronavirus Statistics",
+                             icon_url="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/SARS-CoV-2_without_background.png/220px-SARS-CoV-2_without_background.png")
 
             if scope.lower() == "global":
                 res_g = self.covidData.results['Global']
 
                 embed.set_thumbnail(url="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/International_Flag_of_Planet_Earth.svg/800px-International_Flag_of_Planet_Earth.svg.png")
-                embed.set_footer(text="Covid Watch - Coronavirus Statistics",
-                                    icon_url="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/SARS-CoV-2_without_background.png/220px-SARS-CoV-2_without_background.png")
 
                 death_rate = str(int(str(res_g['TotalDeaths']).replace(',','')) / int(str(res_g['TotalConfirmed']).replace(',','')) * 100)
                 death_rate = death_rate[:6] + "%"
@@ -67,8 +67,6 @@ class CasesCMD(Command):
                 for country in self.covidData.results['Countries']:
                     if country['Country'].lower() == scope.lower() or country['CountryCode'].lower() == scope.lower() or country['Slug'] == scope.lower():
                         embed.set_thumbnail(url="https://www.countryflags.io/"+country['CountryCode'].lower()+"/flat/64.png")
-                        embed.set_footer(text="Covid Watch - Coronavirus Statistics",
-                                            icon_url="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/SARS-CoV-2_without_background.png/220px-SARS-CoV-2_without_background.png")
 
                         death_rate = str(int(str(country['TotalDeaths']).replace(',','')) / int(str(country['TotalConfirmed']).replace(',','')) * 100)
                         death_rate = death_rate[:6] + "%"
