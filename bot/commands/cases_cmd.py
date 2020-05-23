@@ -22,7 +22,15 @@ class CasesCMD(Command):
                 continue
             if arg[0] == "country" or arg[0] == "c":
                 if len(arg) > 1:
-                    scope = arg[1]
+                    for arg in args[1:]:
+                        scope = scope + arg
+                        if not arg == args[len(args-1)]:
+                            scope = scope + " "
+                    print(scope)
+
+                    # Adding special cases to countries that should have them
+                    if scope == "USA":
+                        scope = "US"
                 else:
                     await message.channel.send("**`You must enter the name of a country you would like to scope into.`**")
             if arg[0] == "all" or arg[0] == "a":
