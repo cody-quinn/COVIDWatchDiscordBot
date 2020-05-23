@@ -1,6 +1,4 @@
 /venv/
 /.idea/
 **/__pycache__
-
-**/token.txt
-**/clientid.txt
+**/preferences.json

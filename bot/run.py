@@ -1,7 +1,8 @@
 #Imports
-import discord, requests, threading, asyncio, time
-from bot.commands import CasesCMD, HelpCMD
+import discord
+from bot.commands import CasesCMD, HelpCMD, InviteCMD
 from bot.daemons import UpdateStatus
+from bot import getPreferences
 
 registered_commands = []
 
@@ -10,6 +11,8 @@ def main():
     client = discord.Client()
     registered_commands.append(CasesCMD("cases"))
     registered_commands.append(HelpCMD("help"))
+    registered_commands.append(InviteCMD("invite"))
+
 
     @client.event
     async def on_message(message):
@@ -30,6 +33,7 @@ def main():
             ran = False
             for cmd in registered_commands:
                 if cmd.command == command:
+                    ran = True
                     await cmd.run(message, args)
             if not ran:
                 await message.channel.send(content="Did you mean *`c;help`* ?")
@@ -37,7 +41,10 @@ def main():
     @client.event
     async def on_ready():
         UpdateStatus(client)
-    client.run('NzA5MTI2MTI3MDAzNzYyODA4.Xr9SGQ.kwpFBCK2-0ijLhGklMvXadUZbQA')
+    if getPreferences()['bot_token'] == '':
+        print("Please configure a bot token inside of the preferences.json file")
+        exit(0)
+    client.run(getPreferences()['bot_token'])
 
 
 if __name__ == "__main__":

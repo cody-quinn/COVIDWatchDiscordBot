@@ -18,8 +18,11 @@ class HelpCMD(Command):
                         inline=False)
 
         embed.add_field(name="> Support & Feedback",
-                        value="If you have found an issue / bug related to the bot or would like to provide feedback you can by joining our discord `https://discord.gg/7TqeUHE` or adding and dming me on discord @`Ｃｏｄｙ#7144`\n‌ ",
+                        value="If you have found an issue / bug related to the bot or would like to provide feedback you can by joining our discord *https://discord.gg/7TqeUHE* or adding and dming me on discord @`Ｃｏｄｙ#7144`\n‌ ",
                         inline=False)
+
+        embed.add_field(name="> You can add the bot to your server via this link",
+                        value="https://discord.com/oauth2/authorize?client_id=708929935443492995&scope=bot&permissions=8")
 
         await message.channel.send(
             content="‌‌ \n**`COVID Watch Help Article`**\n*`Our bot contains many features for easily indexing the content you want`*\n*`The bots prefix is simply:`*` `***`c;`***",
