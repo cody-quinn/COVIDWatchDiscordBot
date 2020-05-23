@@ -1,5 +1,7 @@
-import discord, requests, datetime
+import discord, requests, datetime, threading, time
 from commands.command import Command
+from daemons.update_data import UpdateData
+
 
 class CasesCMD(Command):
     async def run(self, message, raw_args):
@@ -28,13 +30,11 @@ class CasesCMD(Command):
             # if arg[0] == "day":
             #     ##TODO: Add date selector
 
-        req = requests.get('https://api.covid19api.com/summary')
-        if req.status_code > 199 and req.status_code < 300: #Im afraid the country you selected could not be found, maybe there was a spelling mistake?
-            results = req.json()
+        if self.covidData.req.status_code > 199 and self.covidData.req.status_code < 300: #Im afraid the country you selected could not be found, maybe there was a spelling mistake?
             embed = discord.Embed(colour=discord.Colour(0x9c0519), timestamp=datetime.datetime.utcfromtimestamp(1589100774))
 
             if scope.lower() == "global":
-                res_g = results['Global']
+                res_g = self.covidData.results['Global']
 
                 embed.set_thumbnail(url="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/International_Flag_of_Planet_Earth.svg/800px-International_Flag_of_Planet_Earth.svg.png")
                 embed.set_footer(text="Covid Watch - Coronavirus Statistics",
@@ -56,7 +56,7 @@ class CasesCMD(Command):
                     embed.add_field(name="New Deaths", value='{:,}'.format(int(res_g['NewDeaths'])))
                     embed.add_field(name="New Recovered", value='{:,}'.format(int(res_g['NewRecovered'])))
             else:
-                for country in results['Countries']:
+                for country in self.covidData.results['Countries']:
                     if country['Country'].lower() == scope.lower() or country['CountryCode'].lower() == scope.lower() or country['Slug'] == scope.lower():
                         embed.set_thumbnail(url="https://www.countryflags.io/"+country['CountryCode'].lower()+"/flat/64.png")
                         embed.set_footer(text="Covid Watch - Coronavirus Statistics",
@@ -78,6 +78,9 @@ class CasesCMD(Command):
                             embed.add_field(name="New Deaths", value='{:,}'.format(int(country['NewDeaths'])))
                             embed.add_field(name="New Recovered", value='{:,}'.format(int(country['NewRecovered'])))
 
-            await message.channel.send(content="‌‌ \n**`Coronavirus Statistics for "+scope+"`**\n*`Last Update: "+str(country['Date'])+"`*", embed=embed)
+            await message.channel.send(content="‌‌ \n**`Coronavirus Statistics for "+scope+"`**\n*`Last Update: "+str(self.covidData.results['Countries'][0]['Date'])+"`*", embed=embed)
         else:
-            await message.channel.send("**`Covid api returned status code {}.`**".format(req.status_code))
+            await message.channel.send("**`Covid api returned status code {}. Please wait a minute then rerun this command as these issues usually fix themselves.`**".format(self.covidData.req.status_code))
+
+    def init(self):
+        self.covidData = UpdateData()

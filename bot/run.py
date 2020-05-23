@@ -1,13 +1,13 @@
 #Imports
 import discord, requests, threading, asyncio, time
 from commands.cases_cmd import CasesCMD
-from update_status import UpdateStatus
+from daemons.update_status import UpdateStatus
 
 registered_commands = []
-client = discord.Client()
 
 
 def main():
+    client = discord.Client()
     registered_commands.append(CasesCMD("cases"))
 
     @client.event
