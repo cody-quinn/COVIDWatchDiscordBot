@@ -1,5 +1,5 @@
 # **COVIDWatch Discord Bot**
-![107 servers](https://img.shields.io/badge/107-discord%20servers-brightgreen.svg?style=flat)
+![111 servers](https://img.shields.io/badge/107-discord%20servers-brightgreen.svg?style=flat)
 
 COVIDWatch is a simple discord bot that allows you to easily access the latest information on the virus, if you encounter any issues while using this bot please open up an *'Issue'*. If you would like to contribue please read the *CONTRIBUTTING.md*
 
