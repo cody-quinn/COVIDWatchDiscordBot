@@ -1,8 +1,8 @@
 #Imports
 import discord
 from bot.commands import CasesCMD, HelpCMD, SymptomsCMD, AdviceCMD
-from bot.daemons import UpdateStatus
-from bot import getPreferences, get_data
+from bot.daemons import UpdateStatus, UpdateData
+from bot import getPreferences
 
 registered_commands = []
 
@@ -39,9 +39,10 @@ def main():
             if not ran:
                 await message.channel.send(content="Did you mean *`c;help`* ?")
 
-    # @client.event
-    # async def on_ready():
-    #     UpdateStatus(client)
+    UpdateData()
+    @client.event
+    async def on_ready():
+        UpdateStatus(client)
     if getPreferences()['bot_token'] == '':
         print("Please configure a bot token inside of the preferences.json file")
         exit(0)

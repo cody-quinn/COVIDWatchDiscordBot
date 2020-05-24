@@ -1,12 +1,10 @@
 import discord, threading, asyncio, requests, time
-from bot.daemons.update_data import UpdateData
-from bot import log
+from bot import log, get_data
 
 
 class UpdateStatus(object):
     def __init__(self, client):
         self.client = client
-        self.covidData = UpdateData()
 
         thread = threading.Thread(target=self.run, args=())
         thread.daemon = True
@@ -17,11 +15,12 @@ class UpdateStatus(object):
 
         state=5
         while True:
+            data = get_data()['Result']['Global']['Global']
             if state==1:
                 state=2
                 async def update():
                     try:
-                        await self.client.change_presence(activity=discord.Game(name='{:,} Deaths'.format(int(self.covidData.results['Global']['TotalDeaths']))))
+                        await self.client.change_presence(activity=discord.Game(name='{:,} Deaths'.format(int(data['TotalDeaths']))))
                     except:
                         log("Failed to update bot status")
                 asyncio.run(update())
@@ -29,7 +28,7 @@ class UpdateStatus(object):
                 state = 3
                 async def update():
                     try:
-                        await self.client.change_presence(activity=discord.Game(name='{:,} Recoveries'.format(int(self.covidData.results['Global']['TotalRecovered']))))
+                        await self.client.change_presence(activity=discord.Game(name='{:,} Recoveries'.format(int(data['TotalRecovered']))))
                     except:
                         log("Failed to update bot status")
                 asyncio.run(update())
@@ -37,7 +36,7 @@ class UpdateStatus(object):
                 state = 4
                 async def update():
                     try:
-                        await self.client.change_presence(activity=discord.Game(name='{:,} Casses'.format(int(self.covidData.results['Global']['TotalConfirmed']))))
+                        await self.client.change_presence(activity=discord.Game(name='{:,} Casses'.format(int(data['TotalConfirmed']))))
                     except:
                         log("Failed to update bot status")
                 asyncio.run(update())
