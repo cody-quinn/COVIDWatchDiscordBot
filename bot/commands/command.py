@@ -1,15 +1,7 @@
-import discord
-from bot import log
-
-
 class Command:
     def __init__(self, command):
         self.command = str(command)
-        try:
-            self.init()
-        except:
-            pass
-
+        self.init()
 
     async def run(self, message, raw_args):
         args = []
@@ -23,3 +15,6 @@ class Command:
 
         for arg in args:
            await message.channel.send("{}".format(str(arg)))
+
+    def init(self):
+        pass

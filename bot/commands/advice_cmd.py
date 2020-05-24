@@ -4,11 +4,11 @@ from bot.commands.command import Command
 
 class AdviceCMD(Command):
     async def run(self, message, raw_args):
-        allInfo = False
+        all_info = False
 
         args = []
-        for rarg in raw_args.split('-'):
-            arg = rarg.split(' ')
+        for raw_arg in raw_args.split('-'):
+            arg = raw_arg.split(' ')
             for i in arg:
                 if i == '':
                     arg.remove('')
@@ -19,7 +19,7 @@ class AdviceCMD(Command):
             if len(arg) < 1:
                 continue
             if arg[0] == "all" or arg[0] == "a":
-                allInfo = True
+                all_info = True
 
         embed = discord.Embed(colour=discord.Colour(0x1d837e), timestamp=datetime.datetime.utcfromtimestamp(1589104767))
 
@@ -41,7 +41,7 @@ class AdviceCMD(Command):
                    'Feel free to ~skype~ ~zoom meeting~ discord call people you know; They probably need attention as much as you do!,'
                    'Covid will pass. There is no need to freak out about it\nFight back by staying inside!']
         final_advice = ""
-        if allInfo:
+        if all_info:
             i = 0
             for adv in advices:
                 i += 1

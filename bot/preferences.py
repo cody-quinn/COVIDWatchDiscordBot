@@ -1,6 +1,6 @@
 import os, json
 
-def getPreferences():
+def get_preferences():
     pref_file = os.getcwd() + os.path.sep + "preferences.json"
     if not os.path.exists(pref_file) or not os.path.isfile(pref_file):
         default = {"bot_token": ""}

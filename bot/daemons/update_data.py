@@ -1,4 +1,4 @@
-import threading, requests, time, os, json
+import threading, requests, time, os
 from bot import log
 
 class UpdateData(object):

@@ -1,4 +1,4 @@
-import discord, threading, asyncio, requests, time
+import discord, threading, asyncio, time
 from bot import log, get_data
 
 

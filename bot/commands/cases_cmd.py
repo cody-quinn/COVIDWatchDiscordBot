@@ -6,11 +6,11 @@ from bot import get_data
 class CasesCMD(Command):
     async def run(self, message, raw_args):
         scope = "global"
-        allInfo = False
+        all_info = False
 
         args = []
-        for rarg in raw_args.split('-'):
-            arg = rarg.split(' ')
+        for raw_arg in raw_args.split('-'):
+            arg = raw_arg.split(' ')
             for i in arg:
                 if i == '':
                     arg.remove('')
@@ -34,7 +34,7 @@ class CasesCMD(Command):
                 else:
                     await message.channel.send("**`You must enter the name of a country you would like to scope into.`**")
             if arg[0] == "all" or arg[0] == "a":
-                allInfo = True
+                all_info = True
             # if arg[0] == "day":
             #     ##TODO: Add date selector
 
@@ -59,7 +59,7 @@ class CasesCMD(Command):
                 embed.add_field(name="Total Cases", value='{:,}'.format(int(res_g['TotalConfirmed'])))
                 embed.add_field(name="Death Rate", value=death_rate)
 
-                if allInfo:
+                if all_info:
                     embed.add_field(name="Cases Per Million", value="Coming Soon")
                     embed.add_field(name="New Cases", value='{:,}'.format(int(res_g['NewConfirmed'])))
                     embed.add_field(name="New Deaths", value='{:,}'.format(int(res_g['NewDeaths'])))
@@ -79,7 +79,7 @@ class CasesCMD(Command):
                         embed.add_field(name="Total Cases", value='{:,}'.format(int(country['TotalConfirmed'])))
                         embed.add_field(name="Death Rate", value=death_rate)
 
-                        if allInfo:
+                        if all_info:
                             embed.add_field(name="Cases Per Million", value="Coming Soon")
                             embed.add_field(name="New Cases", value='{:,}'.format(int(country['NewConfirmed'])))
                             embed.add_field(name="New Deaths", value='{:,}'.format(int(country['NewDeaths'])))

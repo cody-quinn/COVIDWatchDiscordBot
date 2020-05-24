@@ -2,7 +2,7 @@
 import discord
 from bot.commands import CasesCMD, HelpCMD, SymptomsCMD, AdviceCMD
 from bot.daemons import UpdateStatus, UpdateData
-from bot import getPreferences
+from bot import get_preferences
 
 registered_commands = []
 
@@ -43,10 +43,10 @@ def main():
     @client.event
     async def on_ready():
         UpdateStatus(client)
-    if getPreferences()['bot_token'] == '':
+    if get_preferences()['bot_token'] == '':
         print("Please configure a bot token inside of the preferences.json file")
         exit(0)
-    client.run(getPreferences()['bot_token'])
+    client.run(get_preferences()['bot_token'])
 
 
 if __name__ == "__main__":
