@@ -1,4 +1,6 @@
 import threading, requests, time, os
+from pathlib import Path
+
 from bot import log
 
 class UpdateData(object):
@@ -13,10 +15,11 @@ class UpdateData(object):
 
     def run(self):
         log("Update Data daemon started.")
+        Path(os.getcwd() + os.path.sep + "files").mkdir(parents=True, exist_ok=True)
 
         while True:
             last_modified = 0
-            datafile = os.getcwd() + os.path.sep + "data.json"
+            datafile = os.getcwd() + os.path.sep + "files" + os.path.sep + "data.json"
             if os.path.exists(datafile) and os.path.isfile(datafile):
                 last_modified = os.path.getmtime(datafile)
 

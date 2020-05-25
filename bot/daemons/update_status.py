@@ -15,7 +15,12 @@ class UpdateStatus(object):
 
         state=5
         while True:
-            data = get_data()['Result']['Global']['Global']
+            try:
+                if state >= 5:
+                    data = get_data()['Result']['Global']['Global']
+            except:
+                log("Failed to get data for status update.")
+
             if state==1:
                 state=2
                 async def update():
