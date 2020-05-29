@@ -12,7 +12,8 @@ The COVIDWatch bot is a simple bot allowing you to easily get the latest statist
 
 ## Commands
 - `c;cases`   -   Check the current amount of cases globally
-- `c;cases -country {country}`   -   Check the current amount of cases in a specific country
+- `c;cases -country {country}`   -   Check the current amount of cases in a specific country 
+  - Aliases: `c;cases -c {country}`
 - `c;advice`   -   View advice about covid
 - `c;symptoms`   -   View symptoms of covid
 - `c;help`   -   Help related to the bot
