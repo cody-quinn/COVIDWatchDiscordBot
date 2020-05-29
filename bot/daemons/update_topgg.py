@@ -1,22 +1,31 @@
-import dbl, asyncio
+import threading, time, requests
 from bot import log, getPreferences
-from discord.ext import tasks
 
 
 class UpdateTopGG(object):
     def __init__(self, client):
         self.client = client
-        if len(getPreferences()['dbl_token']) > 0:
-            self.dbl_token = getPreferences()['dbl_token']
-            self.dbl_interface = dbl.DBLClient(self.client, self.dbl_token)
-        else:
-            log("No DBL token found, not updating bot page")
+        if getPreferences()['dbl_token']:
+            self.headers = {
+                "content-type": "application/json",
+                "authorization": getPreferences()['dbl_token'],
+                "user-agent": "COVIDWatchDiscordBot/1.1 Python/3.8 requests/2.23.0"
+            }
 
-    @tasks.loop(minutes=10.0)
-    async def update(self):
-        try:
-            await self.dbl_interface.post_guild_count()
-            log("Posted server count to DBL ({})".format(self.dbl_interface.guild_count()))
-        except Exception as e:
-            log("Failed to update DBL \n Stacktrace: {}".format(e))
-        await asyncio.sleep(600)
+            thread = threading.Thread(target=self.run, args=())
+            thread.daemon = True
+            thread.start()
+        else:
+            log("No DBL token in preferences, not updating any bot pages.")
+
+    def run(self):
+        log("Update Data daemon started.")
+
+        while True:
+            payload = {"server_count": len(self.client.guilds)}
+            req = requests.post("https://top.gg/api/bots/{}/stats".format(str(self.client.user.id)), json=payload, headers=self.headers)
+            if 199 < req.status_code < 300:
+                log("Successfully posted '" + str(payload) + "' to TopGG.")
+            else:
+                log("Failed to post guild count to TopGG, response code {}".format(req.status_code))
+            time.sleep(600) # Run every 10 minutes
