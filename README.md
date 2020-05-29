@@ -1,4 +1,6 @@
-![102 servers](https://img.shields.io/badge/102-discord%20servers-brightgreen.svg?style=flat)
+![bot status](https://top.gg/api/widget/status/708929935443492995.svg) 
+![server count](https://top.gg/api/widget/servers/708929935443492995.svg?noavatar=true) 
+![upvotes](https://top.gg/api/widget/upvotes/708929935443492995.svg?noavatar=true) 
 
 # COVIDWatch Discord Bot
 The COVIDWatch bot is a simple bot allowing you to easily get the latest statistics about Covid19. You can join our official discord server [here](discord.gg/7TqeUHE). If you encounter any issues while using this bot please open up an *'Issue'*. If you would like to contribue please read the *CONTRIBUTTING.md*
