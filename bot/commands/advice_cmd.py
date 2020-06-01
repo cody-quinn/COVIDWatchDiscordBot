@@ -36,10 +36,10 @@ class AdviceCMD(Command):
                    'Dont freak out. Staying calm and following the rules helps',
                    'Covid cannot spread through mosquito, flea, or tick bites',
                    'Always wash your hands after going out.',
-                   'Love is in the air.... But so is Covid-19, so try to avoid kissing your partner.',
-                   'Being healthy doesnt necesairly mean you are immune to covid.',
-                   'Feel free to ~skype~ ~zoom meeting~ discord call people you know; They probably need attention as much as you do!,'
-                   'Covid will pass. There is no need to freak out about it\nFight back by staying inside!']
+                   'Being healthy doesnt necessarily mean you are immune to covid.',
+                   'Feel free to call people you know; They probably need attention as much as you do!',
+                   'Covid will pass. There is no need to freak out about it',
+                   'Fight back by staying inside!']
         final_advice = ""
         if allInfo:
             i = 0
@@ -48,8 +48,11 @@ class AdviceCMD(Command):
                 final_advice = final_advice + "**`" + str(i) + "-`**" + adv + "\n"
         else:
             for i in range(3):
-                ii = random.randint(0, len(advices) - 1)
-                final_advice = final_advice + "**`" + str(i + 1) + "-`**" + advices[ii] + "\n"
+                while True:
+                    ii = random.randint(0, len(advices) - 1)
+                    if not advices[ii] in final_advice:
+                        final_advice = final_advice + "**`" + str(i + 1) + "-`**" + advices[ii] + "\n"
+                        break
 
         embed.add_field(name="Advice", value=final_advice)
 
