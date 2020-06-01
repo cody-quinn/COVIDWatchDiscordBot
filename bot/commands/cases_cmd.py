@@ -64,12 +64,13 @@ class CasesCMD(Command):
                 active_cases = res_g['TotalConfirmed'] - res_g['TotalDeaths'] - res_g['TotalRecovered']
 
                 cpm = "Error getting cpm"
-                wd_req = requests.get("https://data.opendatasoft.com/api/records/1.0/search/?dataset=world-population%40kapsarc&rows=1&sort=year&refine.country_name={}".format(res_g['Country']))
-                if 199 < wd_req.status_code < 300:
-                    for wd_country in wd_req.json()['records']:
-                        if wd_country['fields']['country_name'] == res_g['Country']:
-                            cpm = str(wd_country['fields']['value'] / active_cases)
-                            break
+                if not scope.lower() == 'global':
+                    wd_req = requests.get("https://data.opendatasoft.com/api/records/1.0/search/?dataset=world-population%40kapsarc&rows=1&sort=year&refine.country_name={}".format(res_g['Country']))
+                    if 199 < wd_req.status_code < 300:
+                        for wd_country in wd_req.json()['records']:
+                            if wd_country['fields']['country_name'] == res_g['Country']:
+                                cpm = str(active_cases / wd_country['fields']['value'])
+                                break
 
                 embed.add_field(name=":biohazard: Confirmed Cases",
                                 value='**{:,}** (+{:,})'.format(res_g['TotalConfirmed'], res_g['NewConfirmed']))
@@ -82,7 +83,7 @@ class CasesCMD(Command):
                 embed.add_field(name=":grey_exclamation: Death Rate",
                                 value='**{}**'.format(death_rate))
                 embed.add_field(name=":grey_exclamation: Cases Per Million",
-                                value='**{}.{}**'.format(cpm.split('.')[0], cpm.split('.')[1][:2]))
+                                value='**{}**'.format(cpm[:6]))
                 await message.channel.send(embed=embed)
             except UnboundLocalError:
                 embed = discord.Embed(
