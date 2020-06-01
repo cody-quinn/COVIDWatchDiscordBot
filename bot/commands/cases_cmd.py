@@ -30,20 +30,22 @@ class CasesCMD(Command):
                     # Adding special cases to countries that should have them
                     if scope.lower() == "usa" or scope.lower() == "united states":
                         scope = "US"
+                    if scope.lower() == "uk":
+                        scope = "United Kingdom"
+                    if scope.lower() == "aus":
+                        scope = "Australia"
                 else:
                     await message.channel.send("**`You must enter the name of a country you would like to scope into.`**")
 
-        if self.covidData.req: #Im afraid the country you selected could not be found, maybe there was a spelling mistake?
+        if self.covidData.req:
             if scope.lower() == "global":
                 res_g = self.covidData.results['Global']
                 title = "COVID19 Cases Globally"
-                # url="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/International_Flag_of_Planet_Earth.svg/800px-International_Flag_of_Planet_Earth.svg.png"
             else:
                 for country in self.covidData.results['Countries']:
                     if country['Country'].lower() == scope.lower() or country['CountryCode'].lower() == scope.lower() or country['Slug'] == scope.lower():
                         res_g = country
                         title = "COVID19 Cases | :flag_{}:".format(country['CountryCode'].lower())
-                        # url = "https://www.countryflags.io/" + country['CountryCode'].lower() + "/flat/64.png"
                         break
 
             try:
