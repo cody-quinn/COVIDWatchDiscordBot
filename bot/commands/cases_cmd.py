@@ -1,4 +1,4 @@
-import discord, datetime
+import discord, datetime, requests
 from bot.commands.command import Command
 from bot.daemons.update_data import UpdateData
 
@@ -63,6 +63,14 @@ class CasesCMD(Command):
                 death_rate = death_rate[:6] + "%"
                 active_cases = res_g['TotalConfirmed'] - res_g['TotalDeaths'] - res_g['TotalRecovered']
 
+                cpm = "Error getting cpm"
+                wd_req = requests.get("https://data.opendatasoft.com/api/records/1.0/search/?dataset=world-population%40kapsarc&rows=1&sort=year&refine.country_name={}".format(res_g['Country']))
+                if 199 < wd_req.status_code < 300:
+                    for wd_country in wd_req.json()['records']:
+                        if wd_country['fields']['country_name'] == res_g['Country']:
+                            cpm = str(wd_country['fields']['value'] / active_cases)
+                            break
+
                 embed.add_field(name=":biohazard: Confirmed Cases",
                                 value='**{:,}** (+{:,})'.format(res_g['TotalConfirmed'], res_g['NewConfirmed']))
                 embed.add_field(name=":heart: Recovered",
@@ -74,7 +82,7 @@ class CasesCMD(Command):
                 embed.add_field(name=":grey_exclamation: Death Rate",
                                 value='**{}**'.format(death_rate))
                 embed.add_field(name=":grey_exclamation: Cases Per Million",
-                                value='**{}**'.format('0'))
+                                value='**{}.{}**'.format(cpm.split('.')[0], cpm.split('.')[1][:2]))
                 await message.channel.send(embed=embed)
             except UnboundLocalError:
                 embed = discord.Embed(
