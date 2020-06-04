@@ -37,7 +37,7 @@ class UpdateStatus(object):
                 state = 4
                 async def update():
                     try:
-                        await self.client.change_presence(activity=discord.Game(name='{:,} Casses'.format(int(self.covidData.results['Global']['TotalConfirmed']))))
+                        await self.client.change_presence(activity=discord.Game(name='{:,} Cases'.format(int(self.covidData.results['Global']['TotalConfirmed']))))
                     except:
                         log("Failed to update bot status")
                 asyncio.run(update())
