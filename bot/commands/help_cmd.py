@@ -1,4 +1,4 @@
-import discord, datetime
+import discord, datetime, time
 from bot.commands.command import Command
 
 
@@ -8,7 +8,7 @@ class HelpCMD(Command):
             title=":grey_question: __COVIDWatch Help__",
             description="For a more extensive help page please visit [here](https://github.com/CatDevz/COVIDWatchDiscordBot). If you are seeking support you can join our [discord server](https://discord.gg/7TqeUHE). If you would like to contribute or read the code here is our [github](https://github.com/CatDevz/COVIDWatchDiscordBot). Please [vote](https://top.gg/bot/708929935443492995) for our bot on top.gg and [click here](https://discord.com/api/oauth2/authorize?client_id=708929935443492995&permissions=67584&scope=bot) if you would like to add this bot to your server.\n‌ ",
             colour=discord.Colour(0x9c0519),
-            timestamp=datetime.datetime.now()
+            timestamp=time.time()
         )
         embed.set_footer(text="Covid Watch - Coronavirus Statistics",
                          icon_url="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/SARS-CoV-2_without_background.png/220px-SARS-CoV-2_without_background.png")
