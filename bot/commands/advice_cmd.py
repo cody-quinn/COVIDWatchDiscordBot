@@ -21,7 +21,7 @@ class AdviceCMD(Command):
             if arg[0] == "all" or arg[0] == "a":
                 allInfo = True
 
-        embed = discord.Embed(colour=discord.Colour(0x1d837e), timestamp=time.time())
+        embed = discord.Embed(colour=discord.Colour(0x1d837e), timestamp=datetime.datetime.utcnow())
 
         embed.set_thumbnail(
             url="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/SARS-CoV-2_without_background.png/220px-SARS-CoV-2_without_background.png")
