@@ -1,8 +1,8 @@
 #Imports
-import discord
+import os, discord, threading
 from bot.commands import CasesCMD, HelpCMD, SymptomsCMD, AdviceCMD
 from bot.daemons import UpdateStatus, UpdateTopGG
-from bot import getPreferences, log
+from bot import log
 
 registered_commands = []
 
@@ -17,6 +17,7 @@ def main():
 
     @client.event
     async def on_message(message):
+        log("Message sent " + message.content)
         if ' ' in message.content:
             split_msg = str(message.content).split(' ')
             for i in range(len(split_msg)):
@@ -41,13 +42,10 @@ def main():
 
     @client.event
     async def on_ready():
+        log("Bot ready")
         UpdateStatus(client)
         UpdateTopGG(client)
-    if getPreferences()['bot_token'] == '':
-        print("Please configure a bot token inside of the preferences.json file")
+    if os.environ['BOT_TOKEN'] == '':
+        print("Please configure a bot token in your .env file")
         exit(0)
-    client.run(getPreferences()['bot_token'])
-
-
-if __name__ == "__main__":
-    main()
+    client.run(os.environ['BOT_TOKEN'])

@@ -1,0 +1,11 @@
+version: '3.7'
+
+services:
+  covid-watch:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    environment:
+      - BOT_TOKEN=${BOT_TOKEN}
+      - DBL_TOKEN=${DBL_TOKEN}
+    restart: unless-stopped

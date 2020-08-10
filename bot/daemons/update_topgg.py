@@ -1,14 +1,14 @@
-import threading, time, requests
-from bot import log, getPreferences
+import os, threading, time, requests
+from bot import log
 
 
 class UpdateTopGG(object):
     def __init__(self, client):
         self.client = client
-        if getPreferences()['dbl_token']:
+        if os.environ['BOT_TOKEN']:
             self.headers = {
                 "content-type": "application/json",
-                "authorization": getPreferences()['dbl_token'],
+                "authorization": os.environ['BOT_TOKEN'],
                 "user-agent": "COVIDWatchDiscordBot/1.1 Python/3.8 requests/2.23.0"
             }
 
