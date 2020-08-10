@@ -4,7 +4,7 @@ from bot.commands.command import Command
 
 class SymptomsCMD(Command):
     async def run(self, message, raw_args):
-        embed = discord.Embed(colour=discord.Colour(0x1d837e), timestamp=time.time())
+        embed = discord.Embed(colour=discord.Colour(0x1d837e), timestamp=datetime.datetime.utcnow())
 
         embed.set_thumbnail(
             url="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/SARS-CoV-2_without_background.png/220px-SARS-CoV-2_without_background.png")
