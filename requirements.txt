@@ -1,3 +1,4 @@
 requests~=2.23.0
 discord.py
 urllib3>=1.26.5 # not directly required, pinned by Snyk to avoid a vulnerability
+aiohttp>=3.8.6 # not directly required, pinned by Snyk to avoid a vulnerability
